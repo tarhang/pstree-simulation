@@ -41,8 +41,9 @@ void helper_print_postorder(struct process* root);
 void print_inorder(struct process *root);
 void helper_print_inorder(struct process* root);
 void print_levelorder(struct process *root);
-void helper_print_levelorder(struct process* root);
+void helper_print_levelorder(struct queue** line);
 int num_nodes(struct process *root);
+int helper_num_nodes(struct queue* line, int num);
 int is_complete(struct process *root);
 void remove_all(struct process **root);
 
