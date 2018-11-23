@@ -63,11 +63,11 @@ int main()
 		// Inorder: 12 14 16 13 17 15 
 
 	// Test 4. Level order
-//	printf("Testing levelorder\n");
-//	print_levelorder(NULL); 
-//	print_levelorder(first); 
-//	print_levelorder(second); 
-//	print_levelorder(third);
+	printf("Testing levelorder\n");
+	print_levelorder(NULL); 
+	print_levelorder(first); 
+	print_levelorder(second); 
+	print_levelorder(third);
 	// should print:
 		// Testing levelorder
 		// Levelorder: 
@@ -76,11 +76,11 @@ int main()
 		// Levelorder: 12 13 14 15 16 17 
 
 	// Test 5. Num nodes
-//	printf("Test num nodes\n");
-//	printf("%d\n", num_nodes(NULL)); // 0
-//	printf("%d\n", num_nodes(first)); // 6
-//	printf("%d\n", num_nodes(second)); // 5
-//	printf("%d\n", num_nodes(third)); // 6
+	printf("Test num nodes\n");
+	printf("%d\n", num_nodes(NULL)); // 0
+	printf("%d\n", num_nodes(first)); // 6
+	printf("%d\n", num_nodes(second)); // 5
+	printf("%d\n", num_nodes(third)); // 6
 
 	// Test 6. Is complete? 
 //	printf("Testing is_complete\n");
