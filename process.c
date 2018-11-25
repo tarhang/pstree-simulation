@@ -189,3 +189,105 @@ int num_nodes(struct process *root)
 		return helper_num_nodes(line, 0);
 	return 0;
 }
+
+
+int helper_is_complete(struct queue* line, int all_complete)
+{
+	/*
+		helper function to determine if a binary tree, repreented in levelorder by the queue line, is complete
+		
+		Arguements:
+		line -- queue data structure created by the levelorder traversal of the binary tree
+		seen_empty -- 1 if a node with less than two children has been seen. 0 otherwise
+		
+		Return:
+		-- 1 if the tree is complete. 0 otherwise
+	*/
+	int empty = 1 - all_complete;
+	
+	if (line)
+	{
+		// if an empty spot has been seen (a node with less than two children - hence all_copmlete = 0), all it takes for a 
+		// tree to be incomplete is to see another node with at least one child
+		if (all_complete == 0)
+		{
+			if (line -> proc -> left || line -> proc -> right)
+				return 0;
+		}
+		
+		// if we have not seen an empty spot (ie. all nodes has had two children - hence all_complete = 1), add their children. 
+		// If they have less than two children, record that we have seen an empty spot.
+		if (all_complete == 1)
+		{
+			if (line -> proc -> left)
+				enqueue(line -> proc -> left, &line);
+			else
+			{
+				empty = 1;
+				
+				// if a node has a right cihld after missing a left child, tree incomplete
+				if (line -> proc -> right)
+					return 0;
+			}		
+				
+			if (line -> proc -> right)
+				enqueue(line -> proc -> right, &line);
+			else
+				empty = 1;
+		}
+		
+		dequeue(&line);
+		return helper_is_complete(line, 1 - empty); 
+	}
+	
+	return 1;
+}
+
+
+int is_complete(struct process *root)
+{
+	/*
+		returns 1 if the binary tree rooted at root is complete
+		
+		Arguement:
+		root -- root of the binary tree
+		
+		Return:
+		-- 1 if the tree is complete. 0 otherwise
+	*/
+	
+	struct queue* line = NULL;
+	enqueue(root, &line);
+	if (root)
+		return helper_is_complete(line, 1);
+	return 1;	
+	
+}
+
+
+void remove_all(struct process** root)
+{
+	/*
+		removes all the nodes of the binary tree rooted at root
+		
+		Arguement:
+		root -- double pointer to the root of the binary tree
+	*/
+	
+	if (root == NULL)
+		return;
+	
+    if(*root)
+    {
+        struct process* curr = *root;
+
+        if(curr -> left)
+            remove_all(&(curr -> left));
+        if(curr -> right)
+            remove_all(&(curr -> right));
+
+        free(curr);
+        *root = NULL;
+    }
+}
+
