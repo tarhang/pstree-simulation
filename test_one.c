@@ -83,26 +83,26 @@ int main()
 	printf("%d\n", num_nodes(third)); // 6
 
 	// Test 6. Is complete? 
-//	printf("Testing is_complete\n");
-//	printf("%d\n", is_complete(NULL)); // 1
-//	printf("%d\n", is_complete(first)); // 1
-//	printf("%d\n", is_complete(second)); // 0
-//	printf("%d\n", is_complete(third)); // 0
-//	first->right->right = make_process(7, 7);
-//	printf("%d\n", is_complete(first)); // 1
-//	first->right->left = NULL;
-//	remove_all(&(first->right->left));
-//	printf("%d\n", is_complete(first)); // 0
+	printf("Testing is_complete\n");
+	printf("%d\n", is_complete(NULL)); // 1
+	printf("%d\n", is_complete(first)); // 1
+	printf("%d\n", is_complete(second)); // 0
+	printf("%d\n", is_complete(third)); // 0
+	first->right->right = make_process(7, 7);
+	printf("%d\n", is_complete(first)); // 1
+	first->right->left = NULL;
+	remove_all(&(first->right->left));
+	printf("%d\n", is_complete(first)); // 0
 
 	// Test 7. Remove all 
-//	printf("Testing remove\n");
-//	remove_all(NULL);
-//	remove_all(&first);
-//	remove_all(&second);
-//	remove_all(&third); 
-//	print_inorder(first); 
-//	print_inorder(second);
-//	print_inorder(third);
+	printf("Testing remove\n");
+	remove_all(NULL);
+	remove_all(&first);
+	remove_all(&second);
+	remove_all(&third); 
+	print_inorder(first); 
+	print_inorder(second);
+	print_inorder(third);
 	// should print:
 		// Testing remove
 		// Inorder: 
