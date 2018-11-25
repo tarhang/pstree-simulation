@@ -1,6 +1,4 @@
-
 #include "process.h"
-
 
 //////////////////////////////////////////////////////////////////////////////////
 ///// Stack implementation
@@ -98,7 +96,6 @@ struct process* dequeue(struct queue **front)
 
 	to_return -> next = NULL;
 	free(to_return);
-//	free(to_return);
 
 	return ret;
 }
@@ -152,5 +149,4 @@ void print_preorder(struct process *root)
 	helper_print_preorder(root);
 	printf("\n");
 }
-
 
