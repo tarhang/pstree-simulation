@@ -90,7 +90,7 @@ int main()
 	printf("%d\n", is_complete(third)); // 0
 	first->right->right = make_process(7, 7);
 	printf("%d\n", is_complete(first)); // 1
-	first->right->left = NULL;
+	//first->right->left = NULL;
 	remove_all(&(first->right->left));
 	printf("%d\n", is_complete(first)); // 0
 

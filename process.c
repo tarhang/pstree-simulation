@@ -139,6 +139,7 @@ void print_levelorder(struct process *root)
 	if (root)
 		helper_print_levelorder(&line);
 	printf("\n");
+	free_queue(&line);
 }
 
 
@@ -187,6 +188,7 @@ int num_nodes(struct process *root)
 	enqueue(root, &line);
 	if (root)
 		return helper_num_nodes(line, 0);
+	free_queue(&line);
 	return 0;
 }
 
@@ -203,6 +205,7 @@ int helper_is_complete(struct queue* line, int all_complete)
 		Return:
 		-- 1 if the tree is complete. 0 otherwise
 	*/
+	
 	int empty = 1 - all_complete;
 	
 	if (line)
@@ -227,7 +230,10 @@ int helper_is_complete(struct queue* line, int all_complete)
 				
 				// if a node has a right cihld after missing a left child, tree incomplete
 				if (line -> proc -> right)
+				{
+					free_queue(&line);
 					return 0;
+				}
 			}		
 				
 			if (line -> proc -> right)
@@ -260,8 +266,28 @@ int is_complete(struct process *root)
 	enqueue(root, &line);
 	if (root)
 		return helper_is_complete(line, 1);
+	free_queue(&line);
 	return 1;	
 	
+}
+
+
+void free_queue(struct queue** line)
+{
+	/*
+		removes all the nodes in the queue pointed by line, freeing its memorty
+		
+		Arguements:
+		line -- double pointer to the front of the queue
+	*/
+	
+	if (*line)
+	{
+		dequeue(line);
+		free_queue(line);
+	}
+	
+	line = NULL;
 }
 
 
@@ -291,3 +317,30 @@ void remove_all(struct process** root)
     }
 }
 
+int contains_pid(struct process *root, int value)
+{
+	/*
+		returns 1 if a node with the given PID, value, exists in the binary tree rooted at root
+		
+		Arguements:
+		root -- root of the binary tree
+		value -- PID value to be searched for
+		
+		Returns:
+		0 or 1 -- 1 if the tree contains a node with PID = value. 0 otherwise.
+	*/
+	
+	if (root)
+	{
+		// if the current node has the pid = value, we have found the node
+		if (root -> pid == value)
+			return 1;
+			
+		// if the current node does not have the pid equal to value, recurse on its left and right nodes.
+		if (root -> left)
+			return contains_pid(root -> left, value);
+		if (root -> right)
+			return contains_pid(root -> right, value);
+	}
+	return 0;
+}
