@@ -46,16 +46,20 @@ int num_nodes(struct process *root);
 int helper_num_nodes(struct queue* line, int num);
 int helper_is_complete(struct queue* line, int all_complete);
 int is_complete(struct process *root);
+void free_queue(struct queue** line);
 void remove_all(struct process **root);
 
 // Part two methods
 int contains_pid(struct process *root, int value);
 int total_mem(struct process *root);
 int can_add(struct process *root, struct process *new_node, int max_mem);
+void helper_insert_levelorder(struct queue** line, struct process* to_add);
 void insert_levelorder(struct process **root, struct process *to_add, int max_mem);
 struct process *create_tree(int first_pid, int max_mem, int mem_per_proc, int num_nodes);
+void helper_create_tree(struct process** root, int pid, int mem, int max_mem, int still_to_go);
 int is_sorted(struct process *root);
 struct process *get_min(struct process *root, int smallest_val);
+struct process* helper_get_min(struct queue* line, int smallest);
 int rebuild_tree(struct process **root);
 int kill(struct process **root, int pid);
 
