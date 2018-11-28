@@ -5,3 +5,6 @@ This project was implemented as a CSC190 course project at the University of Tor
 
 ## Installation
 Navigate to the directory you want to clone this project to. Then clone this repository using with 
+```
+git clone https://github.com/tarhang/pstree-simulation.git
+```
