@@ -160,36 +160,33 @@ int main(int argc, const char * argv[])
 	printf("Testing rebuild_tree\n");
 	
 	// rebuild a tree that doesn't need it	
-	print_levelorder(sixth);	
-	printf("%d\n", rebuild_tree(&sixth)); 
-
-//	printf("%d\n", rebuild_tree(&fourth)); // 0
-//	printf("%d\n", rebuild_tree(NULL)); // 0
+	printf("%d\n", rebuild_tree(&fourth)); // 0
+	printf("%d\n", rebuild_tree(NULL)); // 0
 
 	// make a small tree to rebuild
-//	struct process *fifth = make_process(17, 3);
-//	fifth->right = make_process(20, 4);
+	struct process *fifth = make_process(17, 3);
+	fifth->right = make_process(20, 4);
 	// when rebuilt, the 20 node should be on the left
-//	rebuild_tree(&fifth);
-//	print_levelorder(fifth); // 17 20
-//	print_inorder(fifth); // 20 17
+	rebuild_tree(&fifth);
+	print_levelorder(fifth); // 17 20
+	print_inorder(fifth); // 20 17
 
-//	rebuild_tree(&sixth);
-//	print_levelorder(sixth); // 17 20
-//	print_inorder(sixth); // 20 17
+	rebuild_tree(&sixth);
+	print_levelorder(sixth); // 17 20
+	print_inorder(sixth); // 20 17
 
 	// and finally, rebuild second
-//	rebuild_tree(&second);
-//	print_levelorder(second); // 7 8 9 10 11
-//	print_inorder(second); // 10 8 11 7 9
+	rebuild_tree(&second);
+	print_levelorder(second); // 7 8 9 10 11
+	print_inorder(second); // 10 8 11 7 9
 
-//	second->right->right = make_process(20, 3);
-//	print_levelorder(second); // 7 8 9 10 11 20
-//	print_inorder(second); // 10 8 11 7 9 20
+	second->right->right = make_process(20, 3);
+	print_levelorder(second); // 7 8 9 10 11 20
+	print_inorder(second); // 10 8 11 7 9 20
 
-//	rebuild_tree(&second);
-//	print_levelorder(second); // 7 8 9 10 11 20
-//	print_inorder(second); // 10 8 11 7 20 9
+	rebuild_tree(&second);
+	print_levelorder(second); // 7 8 9 10 11 20
+	print_inorder(second); // 10 8 11 7 20 9
 
 
 	// Test 9: kill
