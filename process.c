@@ -609,7 +609,7 @@ int is_sorted(struct process *root)
 }
 
 
-struct process* helper_get_min(struct queue* line, int threshold, struct process* smallest_node, int smallest_pid)
+struct process* helper_get_min(struct queue* line, int threshold, struct process* smallest_node)
 {
 	/*
 		helper function to return the node with smallest pid that is greater than or equal to smallest
@@ -618,7 +618,6 @@ struct process* helper_get_min(struct queue* line, int threshold, struct process
 		line -- pointer to the front of the queue that represents the binary tree
 		threshold -- threshold integer we want to find the smallest node greater than or equal to
 		smallest_node -- the node in the binary tree with the smallest pid value greater than the threshold
-		smallest_pid -- smallest pid value observed thus far
 		
 		Returns:
 		 -- pointer to the node that satisfies the above requirements
@@ -628,9 +627,13 @@ struct process* helper_get_min(struct queue* line, int threshold, struct process
 	{
 		int curr_val = line -> proc -> pid;
 		
-		if (curr_val >= threshold && curr_val < smallest_pid)
+		if (smallest_node == NULL && curr_val >= threshold)
 		{
-			smallest_pid = curr_val;
+			smallest_node = line -> proc;
+		}
+		
+		else if (smallest_node != NULL && curr_val >= threshold && curr_val < smallest_node->pid)
+		{
 			smallest_node = line -> proc;
 		}
 			
@@ -641,7 +644,7 @@ struct process* helper_get_min(struct queue* line, int threshold, struct process
 			enqueue(line -> proc -> right, &line);
 		
 		dequeue(&line);
-		return helper_get_min(line, threshold, smallest_node, smallest_pid);
+		return helper_get_min(line, threshold, smallest_node);
 	}
 	
 	return smallest_node;
@@ -666,7 +669,7 @@ struct process* get_min(struct process *root, int smallest_val)
 	struct queue* line = NULL;
 	enqueue(root, &line);
 	if (root)
-		return helper_get_min(line, smallest_val, NULL, 9999999);
+		return helper_get_min(line, smallest_val, NULL);
 	return NULL;		
 }
 
@@ -696,34 +699,42 @@ int get_absolute_min(struct process* root, int so_far)
 }
 
 
-void build_sorted_queue(struct queue** line, struct process* root, struct process* last_added)
+void build_levelorder_queue(struct queue** first, struct queue** second)
 {
 	/*
-		builds a level order queue representing the nodes in a binary tree
+		builds a level order queue representing the nodes of a binary tree
 		
 		Argument:
-		line -- double pointer to the head of the queue
-		root -- root of the binary tree to build the queue from
+		first -- double pointer to the head of the first queue that works as a temporary buffer
+		second -- double pointer to the head ot the second queue that will eventually hold the tree
 	*/
 	
-	if (*line)
+	if (*first)
 	{
-		// find the node with the smallest pid greater than or equal to the last added node
-		print_queue(*line);
-		struct queue* find = NULL;
-		enqueue(root, &find);
-		struct process* temp = helper_get_min(find, last_added->pid+1, NULL, 9999999);
-		free_queue(&find);
-
-		// if such a node is found, enqueue that to the level order sorted queue. Recurse
+		if ((*first) -> proc -> left)
+			enqueue((*first) -> proc -> left, first);
+		if ((*first) -> proc -> right)
+			enqueue((*first) -> proc -> right, first);
+		
+		struct process* temp = dequeue(first);
+		
 		if (temp)
 		{
-			print_queue(*line);
-			enqueue(temp, line);
-			print_queue(*line);
-			build_sorted_queue(line, root, temp);
+			enqueue(temp, second);
+			build_levelorder_queue(first, second);
 		}
 	}
+}
+
+
+void quick_sort(struct queue* line)
+{
+	/*
+		quick sorts the given queue
+		
+		ArgumentL
+		line -- pointer to the head of the queue
+	*/
 }
 
 
@@ -748,15 +759,15 @@ int rebuild_tree(struct process **root)
 		if (is_complete(*root) == 0 || is_sorted(*root) == 0)
 		{
 			// first find the node with the smallest pid value
-			struct queue* line = NULL;
-			enqueue(*root, &line);
-			struct process* smallest_node = helper_get_min(line, -1, NULL, 9999999);
-			free_queue(&line);
-			
-			// start a new queue that is level order sorted. ie. Node with the smallest pid at the first position
-			enqueue(smallest_node, &line);
-			build_sorted_queue(&line, *root, smallest_node);
-			// now use the level order sorted queue to build a level order sorted complete binary tree
+			struct queue* first = NULL;
+			struct queue* second = NULL;
+			enqueue(*root, &first);
+			build_levelorder_queue(&first, &second);		// builds a level order queue from the tree
+
+			// yet to implement			
+			quick_sort(line);									// quick sorts the queue
+			//helper_build_tree(line);							// builds a complete sorted tree from the queue
+
 			work_needed = 1;		
 		}
 	}
