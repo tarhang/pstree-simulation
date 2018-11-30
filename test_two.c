@@ -157,9 +157,12 @@ int main(int argc, const char * argv[])
 //	get_min(first, 0); // should abort: get_min: Assertion `is_sorted(root)' failed.
 
 	// Test 8: rebuild_tree
-//	printf("Testing rebuild_tree\n");
+	printf("Testing rebuild_tree\n");
+	
+	// rebuild a tree that doesn't need it	
+	print_levelorder(sixth);	
+	printf("%d\n", rebuild_tree(&sixth)); 
 
-	// rebuild a tree that doesn't need it
 //	printf("%d\n", rebuild_tree(&fourth)); // 0
 //	printf("%d\n", rebuild_tree(NULL)); // 0
 
@@ -241,4 +244,3 @@ int main(int argc, const char * argv[])
 
     return 0;
 }
-	
