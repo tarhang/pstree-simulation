@@ -727,15 +727,107 @@ void build_levelorder_queue(struct queue** first, struct queue** second)
 }
 
 
-void quick_sort(struct queue* line)
+void merge_sort(struct queue** line)
 {
 	/*
-		quick sorts the given queue
+		merge sorts the given queue fronted by line
 		
-		ArgumentL
+		Argument:
 		line -- pointer to the head of the queue
 	*/
+	
+	struct queue* left;
+	struct queue* right;
+	struct queue* head = *line; 
+	  
+	// base case -- length 0 or 1
+	if ((head == NULL) || (head -> next == NULL)) 
+		return; 
+	  
+	// split head into 'left' and right sublists
+	split(head, &left, &right);  
+	  
+	// Recursively sort the sublists
+	merge_sort(&left); 
+	merge_sort(&right); 
+	  
+	// merge the two sorted lists together
+	*line = merge(left, right); 
 }
+
+
+void split(struct queue* line, struct queue** left, struct queue** right)
+{
+	/*
+		splits the given queue into left and right halves. 
+		
+		Arguments:
+		line -- pointer to the head of the queue
+		left -- double pointer to the head of the left half. Initially empty, will point to the beginning of the left half by 
+				the end of the function call
+		right -- double pointer to the head of the right half. Initially empty, will point to the beginning of the right 
+				half by the end of the function call
+	*/
+	
+	struct queue* slow;
+	struct queue* fast; 
+    slow = line; 
+    fast = line -> next; 
+  
+    // advance 'ast two nodes, and advance slow one node
+    
+    while (fast != NULL) 
+    { 
+		fast = fast -> next; 
+		if (fast != NULL) 
+		{ 
+		    slow = slow -> next; 
+		    fast = fast -> next; 
+		} 
+    } 
+  
+    // slow is before the midpoint in the queue, so split the queue in two at that point
+    *left = line; 
+    *right = slow -> next; 
+    slow->next = NULL; 
+}
+
+
+struct queue* merge(struct queue* left, struct queue* right)
+{
+	/*
+		merges the two halves of a queue
+		
+		Arguments:
+		left -- first queue to be merged
+		right -- second queue to be merged
+		
+		Return:
+		results -- merged queues resulting from merging left and right in ascending order
+	*/
+	
+	struct queue* result = NULL; 
+  
+	// if either left or right are NULL, just return the other one and we are done
+	if (!left) 
+		return right; 
+	else if (!right) 
+		return left; 
+	  
+	// Pick either a or b, and recur
+	if (left -> proc -> pid <= right -> proc -> pid) 
+	{ 
+		result = left; 
+		result -> next = merge(left -> next, right); 
+	} 
+	else
+	{ 
+		result = right; 
+		result -> next = merge(left, right -> next); 
+	} 
+	
+	return result; 
+} 
 
 
 int rebuild_tree(struct process **root)
@@ -762,10 +854,10 @@ int rebuild_tree(struct process **root)
 			struct queue* first = NULL;
 			struct queue* second = NULL;
 			enqueue(*root, &first);
-			build_levelorder_queue(&first, &second);		// builds a level order queue from the tree
+			build_levelorder_queue(&first, &second);				// builds a level order queue from the tree
+			merge_sort(&second);									// merge sorts the queue
 
 			// yet to implement			
-			quick_sort(line);									// quick sorts the queue
 			//helper_build_tree(line);							// builds a complete sorted tree from the queue
 
 			work_needed = 1;		
