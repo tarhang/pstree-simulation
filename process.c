@@ -3,12 +3,13 @@
 // Farhang Tarlan, Winter 2013
 
 #include "process.h"
+#define min(a,b) (a<b ? a:b)
 
 
 struct process* make_process(int pid, int mem_used)
 {
 	/*
-		Creates a new process struc with the Arguments given. sets the left and right children to NULL
+		Creates a new process struc with the arguments given. sets the left and right children to NULL
 	
 		Arguments:
 		pid -- integer indicating the pid attribute of the new process
@@ -198,7 +199,7 @@ int helper_is_complete(struct queue* line, int all_complete)
 	/*
 		helper function to determine if a binary tree, repreented in levelorder by the queue line, is complete
 		
-		Arguments:
+		Arguements:
 		line -- queue data structure created by the levelorder traversal of the binary tree
 		seen_empty -- 1 if a node with less than two children has been seen. 0 otherwise
 		
@@ -255,7 +256,7 @@ int is_complete(struct process *root)
 	/*
 		returns 1 if the binary tree rooted at root is complete
 		
-		Argument:
+		Arguement:
 		root -- root of the binary tree
 		
 		Return:
@@ -275,9 +276,9 @@ int is_complete(struct process *root)
 void free_queue(struct queue** line)
 {
 	/*
-		removes all the nodes in the queue pointed by line, freeing its memorty
+		removes all the nodes in the queue pointed to by line, freeing its memorty
 		
-		Arguments:
+		Arguements:
 		line -- double pointer to the front of the queue
 	*/
 	
@@ -296,7 +297,7 @@ void remove_all(struct process** root)
 	/*
 		removes all the nodes of the binary tree rooted at root
 		
-		Argument:
+		Arguement:
 		root -- double pointer to the root of the binary tree
 	*/
 	
@@ -322,7 +323,7 @@ int contains_pid(struct process *root, int value)
 	/*
 		returns 1 if a node with the given PID, value, exists in the binary tree rooted at root
 		
-		Arguments:
+		Arguements:
 		root -- root of the binary tree
 		value -- PID value to be searched for
 		
@@ -352,7 +353,7 @@ int helper_total_mem(struct process* root, int sum)
 	/*
 		helper function to compute the total memory used in the binary tree rooted at root
 		
-		Arguments:
+		Arguements:
 		root -- root of the binary tree
 		sum -- sum of the memory used computed so far
 		
@@ -383,7 +384,7 @@ int total_mem(struct process *root)
 	/*
 		computes the total amount of memory stored in the binary tree rooted at root
 		
-		Argument:
+		Arguement:
 		root -- root of the binary tree
 		
 		Return:
@@ -402,7 +403,7 @@ int can_add(struct process *root, struct process *new_node, int max_mem)
 		tests whether a new node, new_node, can be added to the binary tree rooted at root. To add a new node, the tree must
 		not already contain a node with the same pid, and the total memory used in the new tree must not exceed mem_used
 		
-		Arguments:
+		Arguements:
 		root -- root of the binary tree
 		new_nde -- new node to be added to the binary tree
 		mem_used -- maximum allowance of memory of the new tree after adding new_node
@@ -428,10 +429,10 @@ int can_add(struct process *root, struct process *new_node, int max_mem)
 void helper_insert_levelorder(struct queue** line, struct process* to_add)
 {
 	/*
-		helper function to add a new node, to_add, to a binary tree stored in level order in Argument line, in the first
+		helper function to add a new node, to_add, to a binary tree stored in level order in argument line, in the first
 		available level order position
 		
-		Arguments:
+		Arguements:
 		line -- queue that contains the binary tree in level order
 		to_add -- new node to be added to the binary tree
 	*/
@@ -468,10 +469,10 @@ void insert_levelorder(struct process **root, struct process *to_add, int max_me
 {
 	/*
 		adds a new node, to_add, to the binary tree rooted at root in the first available position in the level order traversal.
-		Note that this operation can only be performed when the resulting tree is complete. Before inserting the new node, 
-		can_add must return true.
+		Note that this operation can only be performed when the resulting tree is complete. For a node to be added, can_add
+		must return true.
 		
-		Arguments:
+		Arguements:
 		root -- double pointer to the root of the binary tree
 		to_add -- new node to be inserted into the subtree
 		max_mem -- max memory allowance of the resulting tree (after insertion of the new node) 
@@ -499,7 +500,7 @@ void helper_create_tree(struct process** root, int pid, int mem, int max_mem, in
 	/*
 		helper function to create a binary tree - loop replacement!
 		
-		Arguments:
+		Arguements:
 		root -- double pointer to the root of the binary tree
 		pid -- pid of the node to be created in this call of the function
 		mem -- momory of the node to be created in this call of the function
@@ -525,7 +526,7 @@ struct process* create_tree(int first_pid, int max_mem, int mem_per_proc, int nu
 		creates a binary tree with with num_nodes. The nodes will have [first_pid, first_pid+num_nodes] pids and mem_per_proc
 		memory.
 		
-		Arguments:
+		Arguements:
 		first_pid -- pid of the first node in the binary tree. Each subsequent node takes the next integer pid
 		max_mem -- maximum memory allowance of the binary tree
 		mem_per_proc -- memory of the of the binary tree nodes
@@ -546,7 +547,7 @@ int helper_is_sorted(struct queue* line, int highest)
 	/*
 		helper function to determine if the binary tree represented by line is sorted.
 		
-		Arguments:
+		Arguements:
 		line -- pointer to the head of the queue that stores the binary tree
 		highest -- highest pid seen so far
 		
@@ -593,7 +594,7 @@ int is_sorted(struct process *root)
 	/*
 		returns 1 if the binary tree rooted at root is sorted in the level order traversal. An empty tree is sorted.
 		
-		Argument:
+		Arguement:
 		root -- pointer to the root of the binary tree
 		
 		Returns:
@@ -608,14 +609,16 @@ int is_sorted(struct process *root)
 }
 
 
-struct process* helper_get_min(struct queue* line, int smallest)
+struct process* helper_get_min(struct queue* line, int threshold, struct process* smallest_node, int smallest_pid)
 {
 	/*
 		helper function to return the node with smallest pid that is greater than or equal to smallest
 		
-		Arguments:
+		Arguements:
 		line -- pointer to the front of the queue that represents the binary tree
-		smallest -- threshold integer we want to find the smallest node greater than or equal to
+		threshold -- threshold integer we want to find the smallest node greater than or equal to
+		smallest_node -- the node in the binary tree with the smallest pid value greater than the threshold
+		smallest_pid -- smallest pid value observed thus far
 		
 		Returns:
 		 -- pointer to the node that satisfies the above requirements
@@ -623,8 +626,13 @@ struct process* helper_get_min(struct queue* line, int smallest)
 	
 	if (line)
 	{
-		if (line -> proc -> pid >= smallest)
-			return line -> proc;
+		int curr_val = line -> proc -> pid;
+		
+		if (curr_val >= threshold && curr_val < smallest_pid)
+		{
+			smallest_pid = curr_val;
+			smallest_node = line -> proc;
+		}
 			
 		if (line -> proc -> left)
 			enqueue(line -> proc -> left, &line);
@@ -633,10 +641,10 @@ struct process* helper_get_min(struct queue* line, int smallest)
 			enqueue(line -> proc -> right, &line);
 		
 		dequeue(&line);
-		return helper_get_min(line, smallest);
+		return helper_get_min(line, threshold, smallest_node, smallest_pid);
 	}
 	
-	return NULL;
+	return smallest_node;
 }
 
 
@@ -646,7 +654,7 @@ struct process* get_min(struct process *root, int smallest_val)
 		returns the node with the smallest pid value that is larger than or equal to smallest_val
 		Asserts the binary tree is level order sorted
 		
-		Arguments:
+		Arguements:
 		root -- root of the binary tree
 		smallest_val -- the threshold we want to find the smallest node with larger pid value than
 		
@@ -658,8 +666,64 @@ struct process* get_min(struct process *root, int smallest_val)
 	struct queue* line = NULL;
 	enqueue(root, &line);
 	if (root)
-		return helper_get_min(line, smallest_val);
+		return helper_get_min(line, smallest_val, NULL, 9999999);
 	return NULL;		
+}
+
+
+int get_absolute_min(struct process* root, int so_far)
+{
+	/*
+		Returns the smallest pid value found in the binary tree rooted at root
+		
+		Argument:
+		root -- root of the binary tree
+		
+		Return:
+		int -- smallest pid value found in any node of the binary tree
+	*/
+	
+	if (root)
+	{
+		int left, right, smaller;
+		left = get_absolute_min(root -> left, so_far);
+		right = get_absolute_min(root -> right, so_far);
+		smaller = min(left, right);
+		smaller = min(smaller, root -> pid);
+		so_far = min(smaller, so_far);
+	}
+	return so_far;
+}
+
+
+void build_sorted_queue(struct queue** line, struct process* root, struct process* last_added)
+{
+	/*
+		builds a level order queue representing the nodes in a binary tree
+		
+		Argument:
+		line -- double pointer to the head of the queue
+		root -- root of the binary tree to build the queue from
+	*/
+	
+	if (*line)
+	{
+		// find the node with the smallest pid greater than or equal to the last added node
+		print_queue(*line);
+		struct queue* find = NULL;
+		enqueue(root, &find);
+		struct process* temp = helper_get_min(find, last_added->pid+1, NULL, 9999999);
+		free_queue(&find);
+
+		// if such a node is found, enqueue that to the level order sorted queue. Recurse
+		if (temp)
+		{
+			print_queue(*line);
+			enqueue(temp, line);
+			print_queue(*line);
+			build_sorted_queue(line, root, temp);
+		}
+	}
 }
 
 
@@ -668,7 +732,7 @@ int rebuild_tree(struct process **root)
 	/*
 		given a binary tree, if it is not complete and level order sorted, it rebuilds the tree to satisfy these two conditiosn
 		
-		Argument:
+		Arguement:
 		root -- double pointer to the root of the binary tree
 		
 		Returns:
@@ -678,11 +742,23 @@ int rebuild_tree(struct process **root)
 	
 	int work_needed = 0;
 	
-	if (is_complete(*root) == 0 || is_sorted(*root) == 0)
+	if (root)
 	{
-		work_needed = 1;
-		
-		
+		// if the tree is not complete and is not sorted, rebuild the tree and set the return variable to 1
+		if (is_complete(*root) == 0 || is_sorted(*root) == 0)
+		{
+			// first find the node with the smallest pid value
+			struct queue* line = NULL;
+			enqueue(*root, &line);
+			struct process* smallest_node = helper_get_min(line, -1, NULL, 9999999);
+			free_queue(&line);
+			
+			// start a new queue that is level order sorted. ie. Node with the smallest pid at the first position
+			enqueue(smallest_node, &line);
+			build_sorted_queue(&line, *root, smallest_node);
+			// now use the level order sorted queue to build a level order sorted complete binary tree
+			work_needed = 1;		
+		}
 	}
 	
 	return work_needed;	
