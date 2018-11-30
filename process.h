@@ -62,7 +62,9 @@ int is_sorted(struct process *root);
 struct process *get_min(struct process *root, int smallest_val);
 struct process* helper_get_min(struct queue* line, int threshold, struct process* smallest_node);
 int get_absolute_min(struct process* root, int so_far);
-
+void merge_sort(struct queue** line);
+void split(struct queue* head, struct queue** left, struct queue** right);
+struct queue* merge(struct queue* left, struct queue* right);
 void build_levelorder_queue(struct queue** first, struct queue** second);
 int rebuild_tree(struct process **root);
 
