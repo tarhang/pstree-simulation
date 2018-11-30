@@ -65,6 +65,8 @@ int get_absolute_min(struct process* root, int so_far);
 void merge_sort(struct queue** line);
 void split(struct queue* head, struct queue** left, struct queue** right);
 struct queue* merge(struct queue* left, struct queue* right);
+void set_children_to_null(struct queue** line);
+void helper_build_tree(struct process** tree, struct queue* line, int mem);
 void build_levelorder_queue(struct queue** first, struct queue** second);
 int rebuild_tree(struct process **root);
 
