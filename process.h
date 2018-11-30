@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<assert.h>
 
+
 struct process{
 	int pid; // must be unique	
 	int mem_used; // memory_used must not exceed MAX_MEM
@@ -59,7 +60,9 @@ struct process *create_tree(int first_pid, int max_mem, int mem_per_proc, int nu
 void helper_create_tree(struct process** root, int pid, int mem, int max_mem, int still_to_go);
 int is_sorted(struct process *root);
 struct process *get_min(struct process *root, int smallest_val);
-struct process* helper_get_min(struct queue* line, int smallest);
+struct process* helper_get_min(struct queue* line, int threshold, struct process* smallest_node, int smallest_pid);
+int get_absolute_min(struct process* root, int so_far);
+void build_sorted_queue(struct queue** line, struct process* root, struct process* last_added);
 int rebuild_tree(struct process **root);
 int kill(struct process **root, int pid);
 
