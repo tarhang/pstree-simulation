@@ -444,7 +444,7 @@ void helper_insert_levelorder(struct queue** line, struct process* to_add)
 			enqueue((*line) -> proc -> left, line);
 		}
 		else
-		{
+		{	
 			(*line) -> proc -> left = to_add;
 			return;
 		}
@@ -490,7 +490,6 @@ void insert_levelorder(struct process **root, struct process *to_add, int max_me
 	else
 		*root = to_add;
 	
-	
 	assert(is_complete(*root));	
 }
 
@@ -523,8 +522,8 @@ void helper_create_tree(struct process** root, int pid, int mem, int max_mem, in
 struct process* create_tree(int first_pid, int max_mem, int mem_per_proc, int num_nodes)
 {
 	/*
-		creates a binary tree with with num_nodes. The nodes will have [first_pid, first_pid+num_nodes] pids and mem_per_proc
-		memory.
+		creates a binary tree with with num_nodes. The nodes will have pid's in the range
+		[first_pid, first_pid+num_nodes] and mem_per_proc memory.
 		
 		Arguements:
 		first_pid -- pid of the first node in the binary tree. Each subsequent node takes the next integer pid
@@ -830,6 +829,47 @@ struct queue* merge(struct queue* left, struct queue* right)
 } 
 
 
+void set_children_to_null(struct queue** line)
+{
+	/*
+		sets the children of the nodes of the queue, that each represent a node in a binary tree, to NULL
+		
+		Argument:
+		line -- double pointer to the head of the queue
+	*/
+	
+	struct queue* curr = *line;
+	
+	for (curr = *line; curr != NULL; curr = curr -> next)
+	{
+		curr -> proc -> left = NULL;
+		curr -> proc -> right = NULL;
+	}
+
+}
+
+
+void helper_build_tree(struct process** tree, struct queue* line, int mem)
+{
+	/*
+		given a queue that represents a binary tree, builds the tree representation of the queue
+		
+		Argument:
+		line -- pointer to the head of the queue
+		
+		Return:
+		tree -- pointer to the root of the binary tree created
+	*/
+	
+	struct queue* curr = line;
+	
+	for (curr = line; curr != NULL; curr = curr -> next)
+	{
+		insert_levelorder(tree, curr -> proc, mem);	
+	}
+}
+
+
 int rebuild_tree(struct process **root)
 {
 	/*
@@ -850,16 +890,19 @@ int rebuild_tree(struct process **root)
 		// if the tree is not complete and is not sorted, rebuild the tree and set the return variable to 1
 		if (is_complete(*root) == 0 || is_sorted(*root) == 0)
 		{
-			// first find the node with the smallest pid value
-			struct queue* first = NULL;
-			struct queue* second = NULL;
-			enqueue(*root, &first);
-			build_levelorder_queue(&first, &second);				// builds a level order queue from the tree
-			merge_sort(&second);									// merge sorts the queue
+			struct queue* temp = NULL;								// temporary for building the queue
+			struct queue* line = NULL;								// the queue that is going to hold the tree
+			struct process* new_tree = NULL;
+			
+			enqueue(*root, &temp);
+			build_levelorder_queue(&temp, &line);					// builds a level order queue from the tree
+			merge_sort(&line);										// merge sorts the queue
+			
+			int mem = total_mem(*root) + 1;		
+			set_children_to_null(&line);							// set every nodes' children in the old tree to null
+			helper_build_tree(&new_tree, line, mem);				// builds a complete sorted tree from the queue
 
-			// yet to implement			
-			//helper_build_tree(line);							// builds a complete sorted tree from the queue
-
+			*root = new_tree;
 			work_needed = 1;		
 		}
 	}
