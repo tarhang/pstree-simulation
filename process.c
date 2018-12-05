@@ -704,7 +704,7 @@ void build_levelorder_queue(struct queue** first, struct queue** second)
 		builds a level order queue representing the nodes of a binary tree
 		
 		Argument:
-		first -- double pointer to the head of the first queue that works as a temporary buffer
+		first -- double pointer to the head of the first queue that works as a temporary buffer. Initially holds tree root
 		second -- double pointer to the head ot the second queue that will eventually hold the tree
 	*/
 	
@@ -813,7 +813,7 @@ struct queue* merge(struct queue* left, struct queue* right)
 	else if (!right) 
 		return left; 
 	  
-	// Pick either a or b, and recur
+	// pick the smaller of the left and right indices, and recurse
 	if (left -> proc -> pid <= right -> proc -> pid) 
 	{ 
 		result = left; 
@@ -873,7 +873,7 @@ void helper_build_tree(struct process** tree, struct queue* line, int mem)
 int rebuild_tree(struct process **root)
 {
 	/*
-		given a binary tree, if it is not complete and level order sorted, it rebuilds the tree to satisfy these two conditiosn
+		given a binary tree, if it is not complete and level order sorted, it rebuilds the tree to satisfy these two conditions
 		
 		Arguement:
 		root -- double pointer to the root of the binary tree
@@ -897,8 +897,9 @@ int rebuild_tree(struct process **root)
 			enqueue(*root, &temp);
 			build_levelorder_queue(&temp, &line);					// builds a level order queue from the tree
 			merge_sort(&line);										// merge sorts the queue
+			free_queue(&temp);										// freeing the temporary queue
 			
-			int mem = total_mem(*root) + 1;		
+			int mem = total_mem(*root) + 1;
 			set_children_to_null(&line);							// set every nodes' children in the old tree to null
 			helper_build_tree(&new_tree, line, mem);				// builds a complete sorted tree from the queue
 
@@ -908,4 +909,57 @@ int rebuild_tree(struct process **root)
 	}
 	
 	return work_needed;	
+}
+
+
+int kill(struct process **root, int pid)
+{
+	int work_done = 0;
+
+	if (root)
+	{
+		work_done = 1;
+		struct queue* temp = NULL;
+		struct queue* line = NULL;
+		struct process* new_tree = NULL;
+		struct queue* curr;
+		struct queue* dummy;
+		int mem = total_mem(*root);
+
+		// build a level order queue representation of the tree
+		enqueue(*root, &temp);
+		build_levelorder_queue(&temp, &line);		
+		set_children_to_null(&line);
+		free_queue(&temp);
+
+		// for the case when the node to be removed is at the beginning of the queue (ie. root of the tree)
+		if (line -> proc -> pid == pid)
+		{
+			dummy = line;
+			line = line -> next;
+			free(dummy);		
+		}
+		
+		// for the case when the node to be removed is not a the root of the binary tree
+		else
+		{
+			for (curr = line; curr -> next != NULL; curr = curr -> next)
+			{
+				if (curr -> next -> proc -> pid == pid)
+				{
+					dummy = curr -> next;
+					curr -> next = dummy -> next;
+					free(dummy);
+					break;
+				}
+			}
+		}
+		
+		// build a new tree with the desired node removed from a sorted level order queue representation of the tree
+		merge_sort(&line);
+		helper_build_tree(&new_tree, line, mem);
+		*root = new_tree;
+	}
+	
+	return work_done;
 }
