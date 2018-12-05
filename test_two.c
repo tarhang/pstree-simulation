@@ -188,54 +188,53 @@ int main(int argc, const char * argv[])
 	print_levelorder(second); // 7 8 9 10 11 20
 	print_inorder(second); // 10 8 11 7 20 9
 
-
 	// Test 9: kill
-//	printf("Testing kill\n");
+	printf("Testing kill\n");
 
 	// kill on NULL
-//	printf("%d\n", kill(NULL, 5)); // 0
+	printf("%d\n", kill(NULL, 5)); // 0
 	// kill a PID not in tree
-//	printf("%d\n", kill(&second, 5)); // 0 
+	printf("%d\n", kill(&second, 5)); // 0 
 
 	// kill a leaf
-//	kill(&first, 8);
-//	print_levelorder(first); // 1 2 3 4 5 7 9 10 12
-//	print_preorder(first); // 1 2 4 10 12 5 3 7 9
+	kill(&first, 8);
+	print_levelorder(first); // 1 2 3 4 5 7 9 10 12
+	print_preorder(first); // 1 2 4 10 12 5 3 7 9
 
 	// kill another leaf (left)
-//	kill(&first, 9);
-//	print_levelorder(first); // 1 2 3 4 5 7 10 12
-//	print_preorder(first); // 1 2 4 12 5 3 7 10
+	kill(&first, 9);
+	print_levelorder(first); // 1 2 3 4 5 7 10 12
+	print_preorder(first); // 1 2 4 12 5 3 7 10
 
 	// kill another leaf (right)
-//	kill(&first, 12);
-//	print_levelorder(first); // 1 2 3 4 5 7 10
-//	print_preorder(first); // 1 2 4 5 3 7 10
+	kill(&first, 12);
+	print_levelorder(first); // 1 2 3 4 5 7 10
+	print_preorder(first); // 1 2 4 5 3 7 10
 
 	// kill root
-//	struct process *seventh = make_process(80, 1);
-//	kill(&seventh, 80);
-//	print_levelorder(seventh); // is null
+	struct process *seventh = make_process(80, 1);
+	kill(&seventh, 80);
+	print_levelorder(seventh); // is null
 
 	// kill a different root
-//	kill(&first, 1);
-//	print_levelorder(first); // 2 3 4 5 7 10
-//	print_preorder(first); // 2 3 5 7 4 10
+	kill(&first, 1);
+	print_levelorder(first); // 2 3 4 5 7 10
+	print_preorder(first); // 2 3 5 7 4 10
 
 	// kill a parent with a right child
-//	kill(&first, 3);
-//	print_levelorder(first); // 2 4 5 7 10
-//	print_preorder(first); // 2 4 7 10 5
+	kill(&first, 3);
+	print_levelorder(first); // 2 4 5 7 10
+	print_preorder(first); // 2 4 7 10 5
 
 	// kill a parent with a left child and right child
-//	kill(&first, 4);
-//	print_levelorder(first); // 2 5 7 10
-//	print_preorder(first); // 2 5 10 7
+	kill(&first, 4);
+	print_levelorder(first); // 2 5 7 10
+	print_preorder(first); // 2 5 10 7
 
 	// kill a parent with only left child
-//	kill(&first, 5);
-//	print_levelorder(first); // 2 7 10
-//	print_preorder(first); // 2 7 10
+	kill(&first, 5);
+	print_levelorder(first); // 2 7 10
+	print_preorder(first); // 2 7 10
 
     }
 
