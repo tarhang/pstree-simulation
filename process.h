@@ -69,7 +69,6 @@ void set_children_to_null(struct queue** line);
 void helper_build_tree(struct process** tree, struct queue* line, int mem);
 void build_levelorder_queue(struct queue** first, struct queue** second);
 int rebuild_tree(struct process **root);
-
 int kill(struct process **root, int pid);
 
 // Part three methods
@@ -78,3 +77,4 @@ void spawn(struct process *root, int max_mem);
 int is_leaf(struct process *root, struct process *current);
 int time_to_crash(struct process *root, int max_mem);
 void killall(struct process **root);
+	
