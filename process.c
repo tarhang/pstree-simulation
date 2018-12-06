@@ -1003,19 +1003,68 @@ int can_add_alternate(struct process *root, struct process *new_node, int max_me
 }
 
 
+int maximum(int a, int b)
+{
+	/*
+		Returns the max of two numbers
+		
+		Arguments:
+		a -- first integer
+		b -- second integer
+		
+		Returns:
+		larger -- the larger of the two integers passed in to the function
+	*/
+	
+	int larger = a;
+	if (b > a)
+		larger = b;
+	return larger;
+}
+
+
+int find_max_pid(struct process* root, int pid)
+{
+	/*
+		Finds the largest pid used in the binary tree rooted at root
+		
+		Arguments:
+		root -- pointer to the root of the binary tree
+		pid -- largest pid found thus far
+		
+		Returns:
+		max_pid -- largest pid found in the binary tree
+	*/
+	
+	if (root)
+	{
+		int max_pid = maximum(pid, root -> pid);		
+		int left = find_max_pid(root -> left, max_pid);
+		int right = find_max_pid(root -> right, max_pid);
+		int larger = maximum(left, right);
+		pid = maximum(larger, max_pid);
+	}
+	return pid;
+}
+
+
 void spawn(struct process *root, int max_mem)
 {
 	/*
 		simulates a fork bomb by cloning the leaf nodes of the tree rooted at root. In the cloning process, each leaf node will
-		give rise to two children: the left child will have the same PID and mem_used as the parent, the right child will take
-		the next available PID
+		give rise to two children: the left child will have the same PID and mem_used as the original parent,
+		the right child will take the next available PID
 		
 		Arguments:
 		root -- pointer to the root of the binary tree
 		max_mem -- maximum memory allowance to spawn the tree before the simulated CPU crashes
 	*/
 	
-		
+	assert(root);
+	assert(root -> left == NULL);
+	assert(root -> right == NULL);
+	assert(max_mem >= 0);
+	// INCOMPLETE! working on it...
 }
 
 
