@@ -910,15 +910,26 @@ int rebuild_tree(struct process **root)
 	
 	return work_needed;	
 }
- 
+
 
 int kill(struct process **root, int pid)
 {
+	/*
+		removes the node with pid equal to pid from the binary tree rooted at root
+		
+		Argument:
+		root -- double pointer to the root of the binary tree
+		pid -- integer indicating the pid value of the node to be removed from the tree
+		
+		Return:
+		word_done -- 1 if the node is successfully removed. 0 if the node was not found in the tree or the removal operation
+					was not performed successfully
+	*/
+	
 	int work_done = 0;
 
 	if (root)
 	{
-		work_done = 1;
 		struct queue* temp = NULL;
 		struct queue* line = NULL;
 		struct process* new_tree = NULL;
@@ -959,7 +970,35 @@ int kill(struct process **root, int pid)
 		merge_sort(&line);
 		helper_build_tree(&new_tree, line, mem);
 		*root = new_tree;
+		assert(is_complete(*root));
+		work_done = 1;
 	}
 	
 	return work_done;
 }
+
+
+int can_add_alternate(struct process *root, struct process *new_node, int max_mem)
+{
+	/*
+		Tests whether a new node, new_node, can be added to the binary tree rooted at root. For a node to be added, the 
+		total memory of the new tree (the tree formed by hypothetically adding the new node) must not exceed the maximum
+		memory allowance, max_mem, passed in to the function.
+		
+		Arguments:
+		root -- pointer to the root of the binary tree
+		new_node -- new node to be added to the binary tree
+		max_mem -- maximum memory allowance of the binary tree
+		
+		Return:
+		can -- 0 if the new node can not be added to the binary tree. 1 if the new node can be added to the binary tree
+	*/
+	
+	assert(new_node);
+	int can = 0;
+	int mem_used = total_mem(total_mem(root)) + new_node -> mem_used;
+	if (mem_used <= max_mem)
+		can = 1;
+	return can;
+}
+
