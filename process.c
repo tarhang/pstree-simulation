@@ -996,9 +996,72 @@ int can_add_alternate(struct process *root, struct process *new_node, int max_me
 	
 	assert(new_node);
 	int can = 0;
-	int mem_used = total_mem(total_mem(root)) + new_node -> mem_used;
+	int mem_used = total_mem(root) + new_node -> mem_used;
 	if (mem_used <= max_mem)
 		can = 1;
 	return can;
 }
 
+
+void spawn(struct process *root, int max_mem)
+{
+	/*
+		simulates a fork bomb by cloning the leaf nodes of the tree rooted at root. In the cloning process, each leaf node will
+		give rise to two children: the left child will have the same PID and mem_used as the parent, the right child will take
+		the next available PID
+		
+		Arguments:
+		root -- pointer to the root of the binary tree
+		max_mem -- maximum memory allowance to spawn the tree before the simulated CPU crashes
+	*/
+}
+
+
+int exists(struct process* root, struct process* node, int here)
+{
+	/*
+		Determines if a node, node, exists, in a binary tree rooted ar root
+		
+		Argumnets:
+		root -- pointer to the root of the binary tree
+		node -- node to find in the binary tree
+		here -- integer indicating if the node has been found yet 
+		
+		Returns:
+		here -- 0 if the node does not exist in the binary tree, 1 otherwise.
+	*/
+	
+	if (root)
+	{
+		if (root -> pid == node -> pid && root -> mem_used == node -> mem_used)
+			return 1;
+		int left = exists(root -> left, node);
+		int right = exists(root -> right, node);
+		if (left || right)
+			return 1;
+	}
+	return 0;
+}
+
+int is_leaf(struct process *root, struct process *current)
+{
+	/*
+		Determines if a given node, current, is a leaf in the tree rooted at root
+		
+		Arguments:
+		root -- pointer to the root of the binary tree
+		current -- a node of the binary tree
+		
+		Return:
+		leaf -- 0 if the node, current, is not a leaf node. 1 if current is a leaf node
+	*/
+	
+	int leaf = 0;
+	
+	if (current)
+	{
+		if (current -> left == NULL && current -> right == NULL)
+			leaf = exists(root, current);
+	}
+	return leaf;
+}
