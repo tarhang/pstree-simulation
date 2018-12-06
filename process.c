@@ -1014,6 +1014,8 @@ void spawn(struct process *root, int max_mem)
 		root -- pointer to the root of the binary tree
 		max_mem -- maximum memory allowance to spawn the tree before the simulated CPU crashes
 	*/
+	
+		
 }
 
 
@@ -1035,8 +1037,8 @@ int exists(struct process* root, struct process* node, int here)
 	{
 		if (root -> pid == node -> pid && root -> mem_used == node -> mem_used)
 			return 1;
-		int left = exists(root -> left, node);
-		int right = exists(root -> right, node);
+		int left = exists(root -> left, node, here);
+		int right = exists(root -> right, node, here);
 		if (left || right)
 			return 1;
 	}
@@ -1061,7 +1063,7 @@ int is_leaf(struct process *root, struct process *current)
 	if (current)
 	{
 		if (current -> left == NULL && current -> right == NULL)
-			leaf = exists(root, current);
+			leaf = exists(root, current, 0);
 	}
 	return leaf;
 }
