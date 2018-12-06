@@ -20,20 +20,20 @@ int main(int argc, const char * argv[])
 	printf("Testing can_add_alternate\n");
 	// accepts non-unique PIDs
 	printf("%d\n", can_add_alternate(second, make_process(7, 7), 1000) ); // 1
-//	printf("%d\n", can_add_alternate(second, make_process(11, 7), 1000) ); // 1
-//	printf("%d\n", can_add_alternate(second, make_process(12, 7), 1000) ); // 1
+	printf("%d\n", can_add_alternate(second, make_process(11, 7), 1000) ); // 1
+	printf("%d\n", can_add_alternate(second, make_process(12, 7), 1000) ); // 1
 	// max memory
-//	printf("%d\n", can_add_alternate(second, make_process(12, 1), 0) ); // 0
-//	printf("%d\n", can_add_alternate(second, make_process(12, 1), 45) ); // 0
-//	printf("%d\n", can_add_alternate(second, make_process(12, 1), 46) ); // 1
-//	printf("%d\n", can_add_alternate(second, make_process(12, 1), 47) ); // 1
+	printf("%d\n", can_add_alternate(second, make_process(12, 1), 0) ); // 0
+	printf("%d\n", can_add_alternate(second, make_process(12, 1), 45) ); // 0
+	printf("%d\n", can_add_alternate(second, make_process(12, 1), 46) ); // 1
+	printf("%d\n", can_add_alternate(second, make_process(12, 1), 47) ); // 1
 	// adding NULL
 //	printf("%d\n", can_add_alternate(second, NULL, 46) ); // should abort --  can_add_alternate: Assertion `new_node' failed.
 
 
 	// Test 2: spawn
 //	spawn(NULL, 4); // should abort as root is NULL
-// 	spawn(second, 50); // should abort as third's root has children
+ 	spawn(second, 50); // should abort as second's root has children
 //	struct process* third = make_process(1, 1);
 // 	spawn(third, -1); // should abort as invalid amount of memory
 //	spawn(third, 1); // won't add anything new
