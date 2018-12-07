@@ -1052,19 +1052,19 @@ void spawn(struct process *root, int max_mem)
 {
 	/*
 		simulates a fork bomb by cloning the leaf nodes of the tree rooted at root. In the cloning process, each leaf node will
-		give rise to two children: the left child will have the same PID and mem_used as the original parent,
-		the right child will take the next available PID
+		give rise to two children: the left child will have the same PID and mem_used as the parent, the right child will 
+		take the next available PID. Spawning will continue untill the last layer exceeds the memory allowance, max_mem. In 
+		each level, the nodes are added left to right.
 		
 		Arguments:
 		root -- pointer to the root of the binary tree
-		max_mem -- maximum memory allowance to spawn the tree before the simulated CPU crashes
+		max_mem -- maximum memory allowance of each additional layer of the tree
 	*/
 	
 	assert(root);
 	assert(root -> left == NULL);
 	assert(root -> right == NULL);
 	assert(max_mem >= 0);
-	// INCOMPLETE! working on it...
 }
 
 
