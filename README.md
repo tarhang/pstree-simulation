@@ -16,4 +16,5 @@ git clone https://github.com/tarhang/pstree-simulation.git
 * `test_one.c`, `test_two.c`, and `test_three.c` - contain a main function with test cases for the algorithms developed. Compile each separately
 * `Makefile` - contains the command-line compilation instructions to compile each of the three test files. To compile each of the test files, follow the instructions below in the command-line
   * type `make one` in the coomand line to create an executable file. `./one` executes the executable file
-  * type `make two` in the command-line to create an executable file. This executable requires two additional command-line arguments (50 and 24). Run the executale with `./two 50 24`
+  * type `make two` in the command-line to create an executable file. This executable requires two additional command-line arguments (namely 50 and 24). Run the executale with `./two 50 24`.
+  * type `make three` in the command-line to create the executable. This executable also requires two additional command-line arguments. For now, you can run the tests with any two additional arguments: `./three 1 1`.
