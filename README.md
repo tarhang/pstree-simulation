@@ -8,3 +8,12 @@ To get a copy of this project on your local machine, navigate to the directory y
 ```
 git clone https://github.com/tarhang/pstree-simulation.git
 ```
+
+## Usage
+* `process.h` - contains the struct definitions and function headers
+* `process_provided_parts.c` - contains the queue and stack implementations. Some helper methods for struct process are also included. These functions were provided, as the name suggests!
+* `process.c` - contains the algorithm implementations. This is the core of the project
+* `test_one.c`, `test_two.c`, and `test_three.c` - contain a main function with test cases for the algorithms developed. Compile each separately
+* `Makefile` - contains the command-line compilation instructions to compile each of the three test files. To compile each of the test files, follow the instructions below in the command-line
+  * type `make one` in the coomand line to create an executable file. `./one` executes the executable file
+  * type `make two` in the command-line to create an executable file. This executable requires two additional command-line arguments (50 and 24). Run the executale with `./two 50 24`
