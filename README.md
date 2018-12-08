@@ -10,7 +10,7 @@ git clone https://github.com/tarhang/pstree-simulation.git
 ```
 
 ## Usage
-* `process.h` - contains the struct definitions and function headers
+* `process.h` - contains data structure definitions as well as function headers.
 * `process_provided_parts.c` - contains the queue and stack implementations. Some helper methods for struct process are also included. These functions were provided, as the name suggests!
 * `process.c` - contains the algorithm implementations. This is the core of the project
 * `test_one.c`, `test_two.c`, and `test_three.c` - contain a main function with test cases for the algorithms developed. Compile each separately
